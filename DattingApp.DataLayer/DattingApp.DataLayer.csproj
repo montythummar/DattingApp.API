@@ -5,6 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="System.Data.SqlClient" Version="4.8.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\DattingApp.Dto\DattingApp.Dto.csproj" />
   </ItemGroup>
 
