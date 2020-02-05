@@ -46,19 +46,20 @@ namespace DattingApp.API.Controllers
             return StatusCode(201);
         }
         
-        [HttpPost("Login")]
-        public async Task<IActionResult> Login([FromBody] UsersDto objLoginDto)
+        [HttpPost("Login")]        
+        public async Task<IActionResult> Login([FromBody] UserLoginDto objUserLoginDto)
         {
             List<UsersDto> listUser = new List<UsersDto>();
             listUser = await GetUserList();
-            var user = listUser.Find(x => x.Username.ToLower() == objLoginDto.Username.ToLower());
+            var user = listUser.Find(x => x.Username.ToLower() == objUserLoginDto.Username.ToLower());
             if (user == null)
 
-                return Unauthorized();
+                return BadRequest("Unauthorized");
+                
 
-            if (!VerifyPassword(objLoginDto.Password, user.PasswordHash, user.PasswordSalt))
+            if (!VerifyPassword(objUserLoginDto.Password, user.PasswordHash, user.PasswordSalt))
 
-                return null;
+                return BadRequest("Unauthorized");
 
             var claims = new[]
             {
@@ -127,6 +128,19 @@ namespace DattingApp.API.Controllers
                 passwordSalt = hmac.Key;
                 passwordHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
             }
+        }
+
+        [AllowAnonymous]
+        [HttpPost("CreatePasswordTemp")]
+        public IActionResult CreatePasswordTemp([FromBody] UserLoginDto objUserLoginDto)
+        {
+            byte[] passwordHash, passwordSalt;
+            using (var hmac = new System.Security.Cryptography.HMACSHA512())
+            {
+                passwordSalt = hmac.Key;
+                passwordHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(objUserLoginDto.Password));
+            }
+            return Ok(passwordSalt + "---" + passwordHash);
         }
     }
 }
