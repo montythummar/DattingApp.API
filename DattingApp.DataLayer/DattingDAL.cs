@@ -34,6 +34,7 @@ namespace DattingApp.DataLayer
                     objUserDto.Created = Convert.ToDateTime(rdr["Created"]);
                     objUserDto.LastActive = Convert.ToDateTime(rdr["LastActive"]);
                     objUserDto.Introduction = Convert.ToString(rdr["Introduction"]);
+                    objUserDto.lookingFor = Convert.ToString(rdr["lookingFor"]);
                     objUserDto.Interests = Convert.ToString(rdr["Interests"]);
                     objUserDto.City = Convert.ToString(rdr["City"]);
                     objUserDto.Country = Convert.ToString(rdr["Country"]);
