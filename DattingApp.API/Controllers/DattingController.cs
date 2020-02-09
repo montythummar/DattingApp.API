@@ -1,12 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using DattingApp.DataLayer;
+﻿using DattingApp.DataLayer;
 using DattingApp.Dto;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Security.Claims;
+using System.Threading.Tasks;
 
 namespace DattingApp.API.Controllers
 {
@@ -33,6 +33,24 @@ namespace DattingApp.API.Controllers
             listUserDto = await objDattingDAL.GetUserList();
             objUserDto = listUserDto.FirstOrDefault(U => U.id == id);
             return objUserDto;
+        }
+
+        [HttpPut("UpdateUser/{id}")]
+        public async Task<IActionResult> UpdateUser(int id, UpdateUserDto objUser)
+        {
+            if (id != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
+            {
+                return Unauthorized();
+            }
+
+            int UserId = await objDattingDAL.UpdateUser(id,objUser);
+
+            if(UserId > 0)
+         
+                return NoContent();
+            
+
+           throw new Exception($"Updating user {id} faild on save");
         }
 
     }

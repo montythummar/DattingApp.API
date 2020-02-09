@@ -35,4 +35,13 @@ namespace DattingApp.Dto
         public string Password { get; set; }
     }
 
+    public class UpdateUserDto
+    {        
+        public string Introduction { get; set; }
+        public string lookingFor { get; set; }
+        public string interests { get; set; }
+        public string City { get; set; }
+        public string Country { get; set; }        
+    }
+
 }
