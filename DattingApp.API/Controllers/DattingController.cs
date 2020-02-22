@@ -1,9 +1,11 @@
 ﻿using DattingApp.DataLayer;
+using DattingApp.DataLayer.Common;
 using DattingApp.Dto;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -29,10 +31,10 @@ namespace DattingApp.API.Controllers
         public async Task<UsersDto> GetUserById(int id)
         {
             List<UsersDto> listUserDto = new List<UsersDto>();
-            UsersDto objUserDto = new UsersDto();
+            UsersDto ObjUser = new UsersDto();
             listUserDto = await objDattingDAL.GetUserList();
-            objUserDto = listUserDto.FirstOrDefault(U => U.id == id);
-            return objUserDto;
+            ObjUser = listUserDto.FirstOrDefault(x => x.id == id);
+            return ObjUser;
         }
 
         [HttpPut("UpdateUser/{id}")]

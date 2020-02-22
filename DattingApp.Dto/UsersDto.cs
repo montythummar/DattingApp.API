@@ -26,7 +26,7 @@ namespace DattingApp.Dto
         public string City { get; set; }
         public string Country { get; set; }
         public string PhotoUrl { get; set; }
-        public ICollection<PhotoDto> Photos { get; set; }
+        public List<PhotoDto> Photos { get; set; }
     }   
 
     public class UserLoginDto
