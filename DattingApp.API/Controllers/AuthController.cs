@@ -29,7 +29,7 @@ namespace DattingApp.API.Controllers
         [HttpPost("Register")]
         public async Task<IActionResult> Register([FromBody] UsersDto objUserDto)
         {
-            int userId = 0;
+            UsersDto objReturnUserDto = new UsersDto();
             string userName = Convert.ToString(objUserDto.Username).ToLower();
             if (await isUserExist(userName))
             {
@@ -41,9 +41,10 @@ namespace DattingApp.API.Controllers
             objUserDto.PasswordHash = PasswordHash;
             objUserDto.PasswordSalt = PasswordSalt;
 
-            userId = await objAuthDAL.Register(objUserDto);
+            objReturnUserDto = await objAuthDAL.Register(objUserDto);
+            objReturnUserDto.Password = objUserDto.Password;
 
-            return StatusCode(201);
+            return Ok(objReturnUserDto);
         }
         
         [HttpPost("Login")]        

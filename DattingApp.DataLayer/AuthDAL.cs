@@ -39,26 +39,53 @@ namespace DattingApp.DataLayer
             return Task.FromResult(listUsers);
         }
 
-        public async Task<int> Register(UsersDto objUserDto)
-        {
-            int userIdOut = 0;
+        public async Task<UsersDto> Register(UsersDto objUserDto)
+        {            
+            UsersDto objReturnUserDto = new UsersDto();
             using (SqlConnection con = new SqlConnection(ConnectionString))
             {
                 SqlCommand cmd = new SqlCommand("usp_InsertUser", con);
                 cmd.CommandType = CommandType.StoredProcedure;
                 con.Open();
+
                 cmd.Parameters.AddWithValue("@Username", objUserDto.Username);
                 cmd.Parameters.AddWithValue("@PasswordHash", objUserDto.PasswordHash);
                 cmd.Parameters.AddWithValue("@PasswordSalt", objUserDto.PasswordSalt);
-                cmd.Parameters.Add("@userIdOut", SqlDbType.Int).Direction = ParameterDirection.Output;
+                cmd.Parameters.AddWithValue("@Gender", objUserDto.Gender);                
+                cmd.Parameters.AddWithValue("@DateOfBirth", objUserDto.DateOfBirth);
+                cmd.Parameters.AddWithValue("@KnownAs", objUserDto.KnownAs);
+                cmd.Parameters.AddWithValue("@Created", objUserDto.Created);
+                cmd.Parameters.AddWithValue("@LastActive", objUserDto.LastActive);
+                cmd.Parameters.AddWithValue("@Interests", objUserDto.Interests);
+                cmd.Parameters.AddWithValue("@lookingFor", objUserDto.lookingFor);
+                cmd.Parameters.AddWithValue("@Introduction", objUserDto.Introduction);
+                cmd.Parameters.AddWithValue("@City", objUserDto.City);
+                cmd.Parameters.AddWithValue("@Country", objUserDto.Country);                                
 
-                cmd.ExecuteNonQuery();
+                SqlDataReader rdr = cmd.ExecuteReader();
 
-                userIdOut = Convert.ToInt32(cmd.Parameters["@userIdOut"].Value);
+                while (rdr.Read())
+                {                    
+                    objUserDto.id = Convert.ToInt32(rdr["id"]);
+                    objUserDto.Username = Convert.ToString(rdr["Username"]);
+                    objUserDto.PasswordHash = (byte[])rdr["PasswordHash"];
+                    objUserDto.PasswordSalt = (byte[])rdr["PasswordSalt"];                    
+                    objUserDto.Gender = Convert.ToString(rdr["Gender"]);
+                    objUserDto.DateOfBirth = Convert.ToDateTime(rdr["DateOfBirth"]);
+                    objUserDto.KnownAs = Convert.ToString(rdr["KnownAs"]);
+                    objUserDto.Created = Convert.ToDateTime(rdr["Created"]);
+                    objUserDto.LastActive = Convert.ToDateTime(rdr["LastActive"]);
+                    objUserDto.Interests = Convert.ToString(rdr["Interests"]);
+                    objUserDto.lookingFor = Convert.ToString(rdr["lookingFor"]);
+                    objUserDto.Introduction = Convert.ToString(rdr["Introduction"]);
+                    objUserDto.City = Convert.ToString(rdr["City"]);
+                    objUserDto.Country = Convert.ToString(rdr["Country"]);
+                }
+
                 con.Close();
             }
 
-            return await Task.FromResult(userIdOut);
+            return await Task.FromResult(objReturnUserDto);
         }       
     }
 }

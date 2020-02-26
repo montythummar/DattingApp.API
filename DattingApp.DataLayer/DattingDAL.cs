@@ -29,8 +29,7 @@ namespace DattingApp.DataLayer
                     objUserDto.id = Convert.ToInt32(rdr["id"]);
                     objUserDto.Username = Convert.ToString(rdr["Username"]);
                     objUserDto.Gender = Convert.ToString(rdr["Gender"]);
-                    objUserDto.DateOfBirth = Convert.ToDateTime(rdr["DateOfBirth"]);
-                    objUserDto.Age = Convert.ToInt32(rdr["Age"]);
+                    objUserDto.DateOfBirth = Convert.ToDateTime(rdr["DateOfBirth"]);                    
                     objUserDto.KnownAs = Convert.ToString(rdr["KnownAs"]);
                     objUserDto.Created = Convert.ToDateTime(rdr["Created"]);
                     objUserDto.LastActive = Convert.ToDateTime(rdr["LastActive"]);
