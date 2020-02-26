@@ -99,6 +99,7 @@ namespace DattingApp.DataLayer
 
         //    return Task.FromResult(dtUser);
         //}
+
         public Task<int> UpdateUser(int id, UpdateUserDto objUser)
         {
             List<UsersDto> listUsers = new List<UsersDto>();
@@ -113,6 +114,24 @@ namespace DattingApp.DataLayer
                 cmd.Parameters.AddWithValue("@interests", objUser.interests);
                 cmd.Parameters.AddWithValue("@City", objUser.City);
                 cmd.Parameters.AddWithValue("@Country", objUser.Country);
+                cmd.Parameters.Add("@userIdOut", SqlDbType.Int).Direction = ParameterDirection.Output;
+                con.Open();
+                cmd.ExecuteNonQuery();
+
+                userIdOut = Convert.ToInt32(cmd.Parameters["@userIdOut"].Value);
+                con.Close();
+            }
+            return Task.FromResult(userIdOut);
+        }
+
+        public Task<int> UpdateUserLogActivity(int id)
+        {            
+            int userIdOut = 0;
+            using (SqlConnection con = new SqlConnection(ConnectionString))
+            {
+                SqlCommand cmd = new SqlCommand("usp_UpdateUserLogActivity", con);
+                cmd.CommandType = CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@id", id);                ;               
                 cmd.Parameters.Add("@userIdOut", SqlDbType.Int).Direction = ParameterDirection.Output;
                 con.Open();
                 cmd.ExecuteNonQuery();

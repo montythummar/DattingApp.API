@@ -1,4 +1,5 @@
-﻿using DattingApp.DataLayer;
+﻿using DattingApp.API.Helper;
+using DattingApp.DataLayer;
 using DattingApp.DataLayer.Common;
 using DattingApp.Dto;
 using Microsoft.AspNetCore.Authorization;
@@ -12,6 +13,7 @@ using System.Threading.Tasks;
 
 namespace DattingApp.API.Controllers
 {
+    [ServiceFilter(typeof(LogUserActivity))]
     [Route("api/[controller]")]
     [ApiController]
     [Authorize]
