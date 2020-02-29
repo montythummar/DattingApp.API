@@ -27,6 +27,7 @@ namespace DattingApp.Dto
         public string Introduction { get; set; }        
         public string lookingFor { get; set; }        
         public string Interests { get; set; }
+        public int Age { get; set; }
         [Required]
         public string City { get; set; }
         [Required]
