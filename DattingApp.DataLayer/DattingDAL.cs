@@ -83,23 +83,23 @@ namespace DattingApp.DataLayer
         }
 
 
-        //public Task<DataTable> GetUserById(int UserId)
-        //{
-        //    List<UsersDto> listUsers = new List<UsersDto>();
-        //    DataTable dtUser = new DataTable();
-        //    using (SqlConnection con = new SqlConnection(ConnectionString))
-        //    {
-        //        SqlCommand cmd = new SqlCommand("usp_getUserById", con);
-        //        cmd.CommandType = CommandType.StoredProcedure;
-        //        con.Open();
-        //        cmd.Parameters.AddWithValue("@UserId", UserId);
-        //        var dataReader = cmd.ExecuteReader();
-        //        dtUser.Load(dataReader);
-        //        con.Close();
-        //    }
+        public Task<DataTable> GetUserById(int UserId)
+        {
+            List<UsersDto> listUsers = new List<UsersDto>();
+            DataTable dtUser = new DataTable();
+            using (SqlConnection con = new SqlConnection(ConnectionString))
+            {
+                SqlCommand cmd = new SqlCommand("usp_getUserById", con);
+                cmd.CommandType = CommandType.StoredProcedure;
+                con.Open();
+                cmd.Parameters.AddWithValue("@UserId", UserId);
+                var dataReader = cmd.ExecuteReader();
+                dtUser.Load(dataReader);
+                con.Close();
+            }
 
-        //    return Task.FromResult(dtUser);
-        //}
+            return Task.FromResult(dtUser);
+        }
 
         public Task<int> UpdateUser(int id, UpdateUserDto objUser)
         {
